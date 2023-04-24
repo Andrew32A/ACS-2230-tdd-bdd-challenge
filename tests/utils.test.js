@@ -26,7 +26,28 @@ it("should say hello", function() {
 // This is called "Red-Green-Refactor"
 // ========================================================
 
+it("should return area of width and height", function() {
+  const width = 5
+  const height = 10
+  const output = utils.area(width, height)
+  expect(output).to.be.a("number")
+  expect(output).to.not.be.lessThan(0)
+})
 
+it("should return perimeter of width and height", function() {
+  const width = 5
+  const height = 10
+  const output = utils.perimeter(width, height)
+  expect(output).to.be.a("number")
+  expect(output).to.not.be.lessThan(0)
+})
+
+it("should return circle area of width and height", function() {
+  const radius = 5
+  const output = utils.circleArea(radius)
+  expect(output).to.be.a("number")
+  expect(output).to.not.be.lessThan(0)
+})
 
 
 // ========================================================
@@ -50,20 +71,59 @@ it("Should create a new (object) Item with name and price", function() {
   expect(item).to.have.property("quantity", 1)
 })
 
-it("Should return an array containing all items in cart")
+it("Should return an array containing all items in cart", function() {
+  const cart = utils.getShoppingCart()
+  expect(cart).to.be.a("array")
+})
 
-it("Should add a new item to the shopping cart")
+it("Should add a new item to the shopping cart", function() {
+  const item = { name: "apple", price: 0.99, quantity: 1 }
+  utils.addItemToCart(item)
+  const updatedCart = utils.getShoppingCart()
+  expect(updatedCart).to.deep.include(item)
+})
 
-it("Should return the number of items in the cart")
+it("Should return the number of items in the cart", function() {
+  const cart = utils.getShoppingCart()
+  const numItems = utils.getNumItemsInCart()
+  expect(numItems).to.be.a("number")
+  expect(numItems).to.equal(cart.reduce((total, item) => total + item.quantity, 0))
+})
 
-it("Should remove items from cart")
+it("Should remove items from cart", function() {
+  const item = { name: "apple", price: 0.99, quantity: 1 }
+  utils.addItemToCart(item)
+  utils.removeItemFromCart(item)
+  const updatedCart = utils.getShoppingCart()
+  expect(updatedCart).to.not.deep.include(item)
+})
 
 // ========================================================
 // Stretch Challenges
 // ========================================================
 
-it("Should update the count of items in the cart")
+it("Should update the count of items in the cart", function() {
+  const item = { name: "apple", price: 0.99, quantity: 1 }
+  const initalCart = utils.getShoppingCart()
+  const initialLength = initalCart.length
+  utils.addItemToCart(item)
+  const updatedCart = utils.getShoppingCart()
+  expect(updatedCart.length).to.be.greaterThan(initialLength)
+})
 
-it("Should validate that an empty cart has 0 items")
+it("Should validate that an empty cart has 0 items", function() {
+  const cart = utils.getShoppingCart()
+  expect(cart.length).to.be.equal(0)
+})
 
-it("Should return the total cost of all items in the cart")
+it("Should return the total cost of all items in the cart", function() {
+  const item1 = { name: "apple", price: 0.99, quantity: 1 }
+  const item2 = { name: "banana", price: 1.29, quantity: 1 }
+  const item3 = { name: "pie", price: 4.99, quantity: 1 }
+  utils.addItemToCart(item1)
+  utils.addItemToCart(item2)
+  utils.addItemToCart(item3)
+  calculation = item1.price + item2.price + item3.price
+  result = calculation.toFixed(2)
+  expect(result).to.be.equal("7.27")
+})
